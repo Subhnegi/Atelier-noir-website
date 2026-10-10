@@ -27,7 +27,7 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="text-sm font-semibold uppercase tracking-wider text-ivory/50">Contact</h4>
             <div className="flex flex-col space-y-3">
-              <a href="mailto:studio@example.com" className="text-sm text-ivory/80 hover:text-white transition-colors">studio@example.com</a>
+              <a href="mailto:studio@ateliernoir.com" className="text-sm text-ivory/80 hover:text-white transition-colors">studio@ateliernoir.com</a>
               <Link to="/contact" className="text-sm text-ivory/80 hover:text-white transition-colors">Start a project</Link>
             </div>
           </div>
@@ -35,7 +35,7 @@ export function Footer() {
 
         <div className="mt-20 pt-8 border-t border-ivory/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-ivory/50">
-            &copy; {new Date().getFullYear()} Atelier Noir. All rights reserved. Demo site only.
+            &copy; {new Date().getFullYear()} Atelier Noir. All rights reserved.
           </p>
           <div className="flex gap-4 text-xs text-ivory/50">
             <span>Instagram</span>

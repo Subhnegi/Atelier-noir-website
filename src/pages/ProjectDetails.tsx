@@ -4,6 +4,7 @@ import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { projects } from '../data/projects';
 import { NotFound } from './NotFound';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 
 export function ProjectDetails() {
   const { slug } = useParams();
@@ -13,7 +14,6 @@ export function ProjectDetails() {
   useEffect(() => {
     if (project) {
       document.title = `${project.title} | Atelier Noir`;
-      window.scrollTo(0, 0);
     }
   }, [project]);
 
@@ -21,22 +21,43 @@ export function ProjectDetails() {
     return <NotFound />;
   }
 
+  const shouldReduceMotion = useReducedMotion();
+
+  const revealVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: 'easeOut' as const } 
+    }
+  };
+
   const nextProject = projects[(projectIndex + 1) % projects.length];
 
   return (
     <article className="bg-ivory pb-24">
       {/* Hero */}
-      <div className="w-full h-[70vh] min-h-[500px]">
+      <motion.div 
+        className="w-full h-[70vh] min-h-[500px]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: 'easeOut' as const }}
+      >
         <img
           src={project.heroImage}
           alt={project.title}
           className="w-full h-full object-cover"
         />
-      </div>
+      </motion.div>
 
       <Container className="pt-16 md:pt-24">
         {/* Header */}
-        <header className="mb-16 md:mb-24 grid grid-cols-1 md:grid-cols-12 gap-8">
+        <motion.header 
+          className="mb-16 md:mb-24 grid grid-cols-1 md:grid-cols-12 gap-8"
+          variants={revealVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <div className="md:col-span-8">
             <h1 className="text-4xl md:text-6xl font-serif text-charcoal mb-6">
               {project.title}
@@ -63,7 +84,7 @@ export function ProjectDetails() {
               <span>{project.year}</span>
             </div>
           </div>
-        </header>
+        </motion.header>
 
         {/* Content */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 mb-24">
@@ -97,12 +118,16 @@ export function ProjectDetails() {
         {/* Remaining Gallery */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-32">
           {project.gallery.slice(1).map((img, i) => (
-            <img
+            <motion.img
               key={i}
               src={img}
               alt={`Project detail ${i + 2}`}
               className="w-full h-[60vh] object-cover"
               loading="lazy"
+              variants={revealVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
             />
           ))}
         </div>

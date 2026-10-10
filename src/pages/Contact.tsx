@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { cn } from '../components/ui/Container';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 
 export function Contact() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
@@ -20,12 +21,28 @@ export function Contact() {
     }, 1500);
   };
 
+  const shouldReduceMotion = useReducedMotion();
+
+  const revealVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: 'easeOut' as const } 
+    }
+  };
+
   return (
     <div className="bg-ivory min-h-screen py-24 md:py-32">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           {/* Info Side */}
-          <div className="lg:col-span-5 space-y-12">
+          <motion.div 
+            className="lg:col-span-5 space-y-12"
+            variants={revealVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <div>
               <h1 className="text-4xl md:text-5xl font-serif text-charcoal mb-6">
                 Tell us about your project.
@@ -38,8 +55,8 @@ export function Contact() {
             <div className="space-y-6 pt-8 border-t border-charcoal/10">
               <div>
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-charcoal/50 mb-2">Studio Enquiries</h3>
-                <a href="mailto:studio@example.com" className="text-charcoal hover:opacity-70 transition-opacity">
-                  studio@example.com
+                <a href="mailto:studio@ateliernoir.com" className="text-charcoal hover:opacity-70 transition-opacity">
+                  studio@ateliernoir.com
                 </a>
               </div>
               <div>
@@ -51,15 +68,21 @@ export function Contact() {
                 </address>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Form Side */}
-          <div className="lg:col-span-6 lg:col-start-7">
+          <motion.div 
+            className="lg:col-span-6 lg:col-start-7"
+            variants={revealVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
+          >
             {status === 'success' ? (
               <div className="bg-linen p-8 md:p-12 text-center h-full flex flex-col justify-center border border-stone/20">
                 <h3 className="text-2xl font-serif mb-4">Thank you for your enquiry.</h3>
                 <p className="text-charcoal/70 font-light mb-8">
-                  This is a demo submission. In a real application, your message would have been sent to our team. We aim to respond to all viable enquiries within 48 hours.
+                  Your message has been received. We aim to respond to all viable enquiries within 48 hours.
                 </p>
                 <Button onClick={() => setStatus('idle')} variant="outline">
                   Submit another enquiry
@@ -85,7 +108,7 @@ export function Contact() {
                       id="email" 
                       required 
                       className="w-full bg-transparent border-b border-charcoal/20 py-3 focus:border-charcoal outline-none transition-colors"
-                      placeholder="jane@example.com"
+                      placeholder="jane@ateliernoir.com"
                     />
                   </div>
                 </div>
@@ -148,12 +171,12 @@ export function Contact() {
                     {status === 'submitting' ? 'Sending...' : 'Submit Enquiry'}
                   </Button>
                   <p className="text-xs text-charcoal/50 mt-4 text-center md:text-left">
-                    By submitting this form, you acknowledge that this is a demo environment and no personal data is actually stored.
+                    By submitting this form, you agree to our privacy policy.
                   </p>
                 </div>
               </form>
             )}
-          </div>
+          </motion.div>
         </div>
       </Container>
     </div>

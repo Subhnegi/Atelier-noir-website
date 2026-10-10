@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { cn } from '../ui/Container';
@@ -7,6 +8,7 @@ import { cn } from '../ui/Container';
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -20,7 +22,12 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-ivory/95 backdrop-blur-md border-b border-charcoal/10 transition-colors duration-300">
+    <motion.header 
+      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: shouldReduceMotion ? 0 : 1.4, ease: 'easeOut' }}
+      className="sticky top-0 z-50 w-full bg-ivory/95 backdrop-blur-md border-b border-charcoal/10 transition-colors duration-300"
+    >
       <Container>
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link 
@@ -36,9 +43,10 @@ export function Navbar() {
               <Link
                 key={link.name}
                 to={link.to}
-                className="text-sm tracking-wide font-medium text-charcoal/70 hover:text-charcoal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone focus-visible:ring-offset-4 focus-visible:ring-offset-ivory"
+                className="relative text-sm tracking-wide font-medium text-charcoal/70 hover:text-charcoal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone focus-visible:ring-offset-4 focus-visible:ring-offset-ivory group py-1"
               >
                 {link.name}
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-charcoal scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out" />
               </Link>
             ))}
             <Link
@@ -86,6 +94,6 @@ export function Navbar() {
           </Link>
         </nav>
       </div>
-    </header>
+    </motion.header>
   );
 }

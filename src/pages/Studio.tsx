@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { services } from '../data/services';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 
 export function Studio() {
   const { hash } = useLocation();
@@ -14,10 +15,19 @@ export function Studio() {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
-    } else {
-      window.scrollTo(0, 0);
     }
   }, [hash]);
+
+  const shouldReduceMotion = useReducedMotion();
+
+  const revealVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: 'easeOut' as const } 
+    }
+  };
 
   return (
     <div className="bg-ivory pb-32">
@@ -25,7 +35,12 @@ export function Studio() {
       <section className="pt-24 md:pt-32 pb-16 md:pb-24">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-            <div className="md:col-span-8">
+            <motion.div 
+              className="md:col-span-8"
+              variants={revealVariants}
+              initial="hidden"
+              animate="visible"
+            >
               <h1 className="text-4xl md:text-6xl font-serif text-charcoal mb-8">
                 A rigorous pursuit of quiet spaces.
               </h1>
@@ -37,19 +52,25 @@ export function Studio() {
                   Our work is deeply contextual. Whether a private residence in the hills or a boutique hospitality space in the city, we begin by listening to the landscape and the client.
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </Container>
       </section>
 
       {/* Image break */}
-      <div className="w-full h-[60vh] md:h-[80vh] mb-24">
+      <motion.div 
+        className="w-full h-[60vh] md:h-[80vh] mb-24"
+        variants={revealVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-50px' }}
+      >
         <img 
           src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80" 
           alt="Studio atmosphere" 
           className="w-full h-full object-cover"
         />
-      </div>
+      </motion.div>
 
       {/* Process */}
       <section className="py-16">
@@ -85,13 +106,28 @@ export function Studio() {
       <section id="services" className="py-24 bg-linen scroll-mt-20">
         <Container>
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-serif text-charcoal mb-12 text-center">Core Services</h2>
+            <motion.h2 
+              className="text-3xl md:text-4xl font-serif text-charcoal mb-12 text-center"
+              variants={revealVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+            >
+              Core Services
+            </motion.h2>
             <div className="space-y-12">
               {services.map((service, i) => (
-                <div key={service.id} className={`flex flex-col md:flex-row gap-6 md:gap-12 py-8 ${i !== 0 ? 'border-t border-charcoal/10' : ''}`}>
+                <motion.div 
+                  key={service.id} 
+                  className={`flex flex-col md:flex-row gap-6 md:gap-12 py-8 ${i !== 0 ? 'border-t border-charcoal/10' : ''}`}
+                  variants={revealVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-50px' }}
+                >
                   <h3 className="text-2xl font-serif md:w-1/3 shrink-0">{service.title}</h3>
                   <p className="text-charcoal/80 text-lg font-light leading-relaxed">{service.description}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
