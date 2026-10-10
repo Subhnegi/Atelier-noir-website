@@ -21,7 +21,7 @@ export function FeaturedProjects() {
             <Link 
               key={project.slug} 
               to={`/work/${project.slug}`}
-              className={`group block ${index % 2 === 1 ? 'md:mt-16' : ''}`}
+              className={`group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone focus-visible:ring-offset-4 focus-visible:ring-offset-linen ${index % 2 === 1 ? 'md:mt-16' : ''}`}
             >
               <div className="aspect-[4/5] overflow-hidden bg-charcoal/5 mb-5 relative">
                 <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/5 transition-colors duration-500 z-10 pointer-events-none" />

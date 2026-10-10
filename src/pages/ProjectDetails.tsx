@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { useParams, Navigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { projects } from '../data/projects';
+import { NotFound } from './NotFound';
 
 export function ProjectDetails() {
   const { slug } = useParams();
@@ -17,7 +18,7 @@ export function ProjectDetails() {
   }, [project]);
 
   if (!project) {
-    return <Navigate to="/work" replace />;
+    return <NotFound />;
   }
 
   const nextProject = projects[(projectIndex + 1) % projects.length];

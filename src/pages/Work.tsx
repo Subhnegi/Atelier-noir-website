@@ -33,7 +33,7 @@ export function Work() {
               key={cat}
               onClick={() => setFilter(cat)}
               className={cn(
-                "text-sm font-medium pb-2 border-b-2 transition-colors",
+                "text-sm font-medium pb-2 border-b-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone focus-visible:ring-offset-2",
                 filter === cat 
                   ? "border-charcoal text-charcoal" 
                   : "border-transparent text-charcoal/50 hover:text-charcoal"
@@ -52,11 +52,12 @@ export function Work() {
                 key={project.slug} 
                 to={`/work/${project.slug}`}
                 className={cn(
-                  "group block",
+                  "group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone focus-visible:ring-offset-4 focus-visible:ring-offset-ivory",
                   index % 2 === 1 ? 'md:mt-16' : ''
                 )}
               >
-                <div className="aspect-[4/3] overflow-hidden bg-stone mb-6">
+                <div className="aspect-[4/5] overflow-hidden bg-charcoal/5 mb-5 relative">
+                  <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/5 transition-colors duration-500 z-10 pointer-events-none" />
                   <img
                     src={project.heroImage}
                     alt={project.title}
@@ -64,12 +65,12 @@ export function Work() {
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                 </div>
-                <div className="flex flex-col">
-                  <h3 className="text-2xl font-serif text-charcoal group-hover:opacity-70 transition-opacity">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                  <h3 className="text-base md:text-lg font-serif text-charcoal group-hover:text-charcoal/70 transition-colors duration-300">
                     {project.title}
                   </h3>
-                  <span className="text-sm uppercase tracking-wider text-charcoal/60 mt-2">
-                    {project.category} &middot; {project.location}
+                  <span className="text-[11px] md:text-xs uppercase tracking-widest text-charcoal/60">
+                    {project.category} &middot; {project.location.split(',')[0]}
                   </span>
                 </div>
               </Link>
